@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Warp AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family: Inter, Arial, sans-serif;
+    background: #000;
+    color: white;
+    overflow-x: hidden;
+}
+
+.warp-bg {
+    position: fixed;
+    width: 520px;
+    height: 520px;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+        circle,
+        rgba(255,255,255,.08),
+        transparent 65%
+    );
+    filter: blur(50px);
+    pointer-events: none;
+    animation: pulse 6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%,100% {
+        opacity: .3;
+        transform: translate(-50%,-50%) scale(1);
+    }
+
+    50% {
+        opacity: .7;
+        transform: translate(-50%,-50%) scale(1.15);
+    }
+}
+
+.warp-nav {
+    width: min(900px,92%);
+    margin: 25px auto;
+    padding: 15px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 18px;
+
+    background: rgba(0,0,0,.45);
+    backdrop-filter: blur(18px);
+}
+
+.warp-logo {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.warp-logo span {
+    opacity: .35;
+}
+
+.warp-online {
+    font-size: 10px;
+    color: rgba(255,255,255,.45);
+}
+
+.warp-dot {
+    display: inline-block;
+
+    width: 7px;
+    height: 7px;
+
+    margin-right: 6px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow: 0 0 10px white;
+}
+
+.warp-title {
+    text-align: center;
+
+    margin: 55px 0 8px;
+
+    font-size: clamp(45px,8vw,75px);
+
+    font-weight: 800;
+
+    letter-spacing: -4px;
+
+    background: linear-gradient(
+        180deg,
+        #fff,
+        #777
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.warp-sub {
+    text-align: center;
+
+    color: rgba(255,255,255,.4);
+
+    font-size: 13px;
+
+    margin-bottom: 28px;
+}
+
+.warp-box {
+    width: min(800px,92%);
+    margin: auto;
+}
+
+.warp-chat {
+    height: 430px;
+
+    overflow-y: auto;
+
+    padding: 20px;
+
+    border: 1px solid rgba(255,255,255,.1);
+
+    border-radius: 20px;
+
+    background: rgba(0,0,0,.4);
+
+    backdrop-filter: blur(18px);
+}
+
+.warp-welcome {
+    height: 380px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.warp-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    background: rgba(255,255,255,.05);
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    font-weight: 800;
+
+    margin-bottom: 15px;
+}
+
+.warp-welcome h2 {
+    margin: 0 0 7px;
+    font-size: 19px;
+}
+
+.warp-welcome p {
+    margin: 0;
+
+    color: rgba(255,255,255,.35);
+
+    font-size: 11px;
+}
+
+.warp-message {
+    display: flex;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.warp-avatar {
+    flex: none;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 11px;
+
+    background: rgba(255,255,255,.06);
+
+    border: 1px solid rgba(255,255,255,.1);
+
+    font-size: 9px;
+
+    font-weight: 800;
+}
+
+.warp-content {
+    text-align: left;
+}
+
+.warp-name {
+    color: rgba(255,255,255,.45);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    margin-bottom: 5px;
+}
+
+.warp-text {
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    color: rgba(255,255,255,.85);
+
+    white-space: pre-wrap;
+}
+
+.warp-modes {
+    display: flex;
+
+    gap: 7px;
+
+    margin: 12px 0 10px;
+}
+
+.warp-mode {
+    border: 1px solid rgba(255,255,255,.08);
+
+    background: rgba(255,255,255,.04);
+
+    color: rgba(255,255,255,.45);
+
+    padding: 8px 13px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-weight: 600;
+}
+
+.warp-mode.active {
+    background: white;
+    color: black;
+}
+
+.warp-input {
+    display: flex;
+
+    gap: 8px;
+
+    padding: 9px;
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    border-radius: 17px;
+
+    background: rgba(0,0,0,.4);
+}
+
+#wai-input {
+    flex: 1;
+
+    min-width: 0;
+
+    height: 48px;
+
+    resize: none;
+
+    border: 0;
+
+    outline: 0;
+
+    background: transparent;
+
+    color: white;
+
+    padding: 14px 12px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+}
+
+#wai-input::placeholder {
+    color: rgba(255,255,255,.25);
+}
+
+#wai-send {
+    width: 48px;
+
+    border: 0;
+
+    border-radius: 13px;
+
+    background: white;
+
+    color: black;
+
+    font-size: 19px;
+
+    cursor: pointer;
+}
+
+#wai-send:hover {
+    transform: scale(1.05);
+
+    box-shadow:
+        0 0 25px rgba(255,255,255,.2);
+}
+
+.warp-footer {
+    text-align: center;
+
+    color: rgba(255,255,255,.2);
+
+    font-size: 9px;
+
+    margin-top: 12px;
+}
+
+@media(max-width:600px) {
+
+    .warp-box {
+        width: 94%;
+    }
+
+    .warp-title {
+        letter-spacing: -3px;
+    }
+
+    .warp-chat {
+        height: 400px;
+    }
+
+    .warp-modes {
+        overflow-x: auto;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="warp-bg"></div>
+
+<nav class="warp-nav">
+
+    <div class="warp-logo">
+        WARP<span>.AI</span>
+    </div>
+
+    <div class="warp-online">
+        <span class="warp-dot"></span>
+        ONLINE
+    </div>
+
+</nav>
+
+<h1 class="warp-title">
+    WARP AI
+</h1>
+
+<div class="warp-sub">
+    Ask anything. Create anything. Get warped in.
+</div>
+
+<div class="warp-box">
+
+    <div class="warp-chat" id="wai-chat">
+
+        <div class="warp-welcome" id="wai-welcome">
+
+            <div class="warp-icon">
+                W
+            </div>
+
+            <h2>
+                How can I help?
+            </h2>
+
+            <p>
+                Ask questions, solve math, or create something.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="warp-modes">
+
+        <button class="warp-mode active" data-mode="chat">
+            Chat
+        </button>
+
+        <button class="warp-mode" data-mode="search">
+            Search
+        </button>
+
+        <button class="warp-mode" data-mode="math">
+            Math
+        </button>
+
+        <button class="warp-mode" data-mode="write">
+            Write
+        </button>
+
+    </div>
+
+    <div class="warp-input">
+
+        <textarea
+            id="wai-input"
+            placeholder="Message Warp AI..."
+        ></textarea>
+
+        <button id="wai-send">
+            ↑
+        </button>
+
+    </div>
+
+    <div class="warp-footer">
+        WARP AI
+    </div>
+
+</div>
+
+
+<!-- LOAD WARP AI -->
+
+<script src="./warp-ai.js"></script>
+
+</body>
+</html>
+
